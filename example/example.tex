@@ -1,0 +1,52 @@
+%% Example lecture file
+%% 
+%% The content of the lecture, both notes and slides, are written in 
+%% this single document.
+
+%% Header information
+\title{An introduction to widgets}
+%\course[WD 101]{Widgets for Beginners}
+\date{9 September 2011}
+\author{James Keirstead}
+
+%% Begins the main document
+\begin{document}
+
+%% Make the title slide
+\begin{frame}
+\maketitle
+\end{frame}
+
+%% Use the section commands to divide up the talk, inserting slides where appropriate. 
+
+\section{Introduction}
+Today's talk will be about widgets.  
+
+%% A basic frame with some content
+\begin{frame}{Widgets}
+A widget is a thingy.
+\end{frame}
+
+%% A frame with a subtitle and columns
+\begin{frame}{Widgets}{In two columns}
+\begin{columns}[t]
+\begin{column}{0.5\textwidth}
+\begin{itemize}
+\item First column bullets
+\end{itemize}
+\end{column}
+\pause % Pauses second column display 
+\begin{column}{0.5\textwidth}
+Second column text \citep{Body2000}
+\end{column}
+\end{columns}
+\end{frame}
+
+%% Optional slide for references
+If you would like to read more about widgets, please try these references.
+\begin{frame}[allowframebreaks]{References}
+\bibliographystyle{plainnat}
+\bibliography{refs}
+\end{frame}
+
+\end{document}
