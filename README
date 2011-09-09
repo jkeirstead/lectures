@@ -1,0 +1,14 @@
+-----------------------------------
+LaTeX templates for lecture notes
+
+James Keirstead
+http://www.jameskeirstead.ca
+-----------------------------------
+
+DESCRIPTION
+
+A series of LaTeX class and style files for creating lecture notes and accompanying slides.
+
+INSTALLATION
+
+Place the "lectures" directory in your the "tex/latex/" directory of your LaTeX installation and update your Tex database path.  
