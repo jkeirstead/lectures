@@ -24,10 +24,11 @@ def build_file(content, style, isSlide):
 
     # Set up some initial variables
     root = 'slides' if isSlide else 'notes'
-    work_dir = os.path.dirname(__file__)
+    work_dir = os.path.dirname(os.path.realpath(__file__))
+    print work_dir, os.sep
 
     # Choose the right header file
-    header_file = work_dir + os.altsep + root + '-header.tex'
+    header_file = work_dir + os.sep + root + '-header.tex'
     
     # Read the template
     f = open(header_file, 'r')
