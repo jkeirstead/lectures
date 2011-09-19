@@ -1,0 +1,239 @@
+% Defines common elements for preparing lecture notes 
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{lectures}[2011/09/10 Lecture notes and slides package]
+
+% Enable graphics
+\RequirePackage{graphicx}
+\newcommand{\mylogo}{}
+\newcommand{\setlogo}[1]{\renewcommand{\mylogo}{#1}}
+
+% Define fonts
+\RequirePackage{fontspec}
+\setmainfont{Minion Pro}
+\setsansfont{Myriad Pro}
+\setmonofont{Lucida Console}
+
+% Version control settings
+\input{vc}
+
+% Set colours
+\RequirePackage{color}
+\definecolor{Gray}{rgb}{0.3,0.3,0.3}
+
+% Headings and footers
+\RequirePackage{fancyhdr}
+
+%% git revision control footer 
+\rfoot{\textcolor{Gray}{\texttt{\scriptsize \VCRevision\ on \VCDateISO}}} % 
+
+
+% http://faculty.chicagobooth.edu/donald.eisenstein/more/BeamerLecture.html
+% Define custom commands
+\newcommand{\mycourse}{}
+\newcommand{\mycoursenum}{}
+\newcommand{\course}[2][1]{%
+  \renewcommand{\mycourse}{#2}%
+  \renewcommand{\mycoursenum}{#1}}
+%\subject{\mycourse}
+
+% Allow hyperlinks
+\RequirePackage{hyperref}
+\hypersetup{colorlinks=true,urlcolor=black!50}
+
+% Allow referencing
+\RequirePackage{natbib}
+
+% Make sure title is set
+\AtBeginLecture{\title{\insertlecture}}
+
+% Set basic theme
+\usecolortheme{rose}
+\useinnertheme{circles}
+\usefonttheme[only large]{structurebold}
+
+\setbeamercolor{sidebar right}{bg=black!15}
+\setbeamercolor{structure}{fg=ImperialBlue}
+\setbeamercolor{author}{parent=structure}
+
+\setbeamerfont{title}{series=\normalfont,size=\LARGE}
+\setbeamerfont{title in sidebar}{series=\bfseries}
+\setbeamerfont{author in sidebar}{series=\bfseries}
+\setbeamerfont*{item}{series=}
+\setbeamerfont{frametitle}{size=}
+\setbeamerfont{block title}{size=\small}
+\setbeamerfont{subtitle}{size=\normalsize,series=\normalfont}
+
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{bibliography item}[book]
+
+\ifx\mylogo\@empty
+ \logo{\includegraphics[width=2cm]{\mylogo}}
+\fi
+
+% Article settings
+% Article version layout settings
+\mode<article>
+
+\makeatletter
+\def\@listI{\leftmargin\leftmargini
+  \parsep 0pt
+  \topsep 5\p@   \@plus3\p@ \@minus5\p@
+  \itemsep0pt}
+\let\@listi=\@listI
+
+\setbeamertemplate{frametitle}{\paragraph*{\insertframetitle\
+    \ \small\insertframesubtitle}\ \par
+}
+
+\setlength{\marginparwidth}{1cm}
+\setlength{\marginparsep}{4.5cm}
+
+\let\origstartsection=\@startsection
+\def\@startsection#1#2#3#4#5#6{%
+  \origstartsection{#1}{#2}{#3}{#4}{#5}{#6\normalfont\sffamily\color{ImperialBlue}\selectfont}}
+
+\makeatother
+
+\mode
+<all>
+
+% From lecture style
+\useoutertheme[height=0pt,width=2.1cm,right]{sidebar}
+\usecolortheme{rose,sidebartab}
+
+% Templates
+\setbeamertemplate{sidebar right}
+{
+  \vskip1em%
+  \hbox to2.1cm{\hss\insertlogo\hss}
+  {\usebeamerfont{title in sidebar}%
+    \vskip1.5em%
+    \hskip3pt%
+    \usebeamercolor[fg]{title in sidebar}%
+    \insertshorttitle[width=2cm-6pt,center,respectlinebreaks]\par%
+    \vskip1.25em%
+  }%
+  {%
+    \hskip3pt%
+    \usebeamercolor[fg]{author in sidebar}%
+    \usebeamerfont{author in sidebar}%
+    \insertshortauthor[width=2cm-2pt,center,respectlinebreaks]\par%
+    \vskip1.25em%
+  }%
+%  \hbox to2cm{\hss\insertlogo\hss}
+%  \vskip1.25em%
+  \insertverticalnavigation{2cm}%
+  \vfill
+  \hbox to 2cm{\hfill\usebeamerfont{subsection in
+      sidebar}\strut\usebeamercolor[fg]{subsection in
+      sidebar}\insertshortlecture.\insertframenumber\hskip5pt}%
+  \vskip3pt%
+}%
+
+\setbeamertemplate{title page}
+{
+  \vbox{}
+  \vskip1em
+%  {\huge Kapitel \insertshortlecture\par}
+  {\usebeamercolor[fg]{title}\usebeamerfont{title}\inserttitle\par}%
+  \ifx\insertsubtitle\@empty%
+  \else%
+    \vskip0.25em%
+    {\usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle\par}%
+  \fi%     
+  \vskip1em\par
+  \mycourse\ (\mycoursenum)\ lecture\par
+  \insertdate\par
+  \vskip0pt plus1filll
+  \leftskip=0pt plus1fill\insertauthor\par
+  \insertinstitute\vskip1em
+}
+
+% Article version layout settings
+\mode<article>
+
+\pagestyle{fancy}
+\fancyhead{}
+\fancyfoot{}
+\rhead{{\scriptsize\thepage}}
+
+
+\makeatletter
+
+\setbeamertemplate{frame end}{%
+  \marginpar{\scriptsize\hbox to 1cm{\sffamily%
+      \hfill\strut\insertshortlecture.\insertframenumber}\hrule height .2pt}}
+
+\def\@maketitle{\makechapter}
+
+\def\makechapter{
+  \newpage
+  \null
+  \vskip 2em%
+  {%
+    \parindent=0pt
+    \raggedright
+    \sffamily
+    \vskip8pt
+%    {\fontsize{36pt}{36pt}\selectfont Lecture \insertshortlecture \par\vskip2pt}
+    {\fontsize{24pt}{28pt}\selectfont \color{ImperialBlue} \insertlecture\par\vskip4pt}
+% TODO    {\Large\selectfont \color{ImperialBlue} \insertsubtitle\par}
+    \vskip10pt
+
+    \normalsize\selectfont Print version of \mycourse\ (\mycoursenum) lecture\par
+    \@date\par
+    \vskip1.5em 
+  }
+  \par
+  \vskip 1.5em%
+}
+
+
+\makeatother
+
+
+\mode
+<all>
+
+
+% Typesetting code listings
+% Typesetting Listings
+
+\usepackage{listings}
+\lstset{language=Java}
+
+\alt<presentation>
+{\lstset{%
+  basicstyle=\footnotesize\ttfamily,
+  commentstyle=\slshape\color{green!50!black},
+  keywordstyle=\bfseries\color{ImperialBlue!50!black},
+  identifierstyle=\color{ImperialBlue},
+  stringstyle=\color{orange},
+  escapechar=\#,
+  emphstyle=\color{red}}
+}
+{
+  \lstset{%
+    basicstyle=\ttfamily,
+    keywordstyle=\bfseries,
+    commentstyle=\itshape,
+    escapechar=\#,
+    emphstyle=\bfseries\color{red}
+  }
+}
+
+% Graphics copyright def
+% New useful definitions:
+
+\newbox\mytempbox
+\newdimen\mytempdimen
+
+\newcommand\includegraphicscopyright[3][]{%
+  \leavevmode\vbox{\vskip3pt\raggedright\setbox\mytempbox=\hbox{\includegraphics[#1]{#2}}%
+    \mytempdimen=\wd\mytempbox\box\mytempbox\par\vskip1pt%
+    {\fontsize{5}{6}\selectfont{\color{black!75}{\vbox{\hsize=\mytempdimen#3}}}}\vskip3pt%
+}}
+
+% Other environments
+\newenvironment{colortabular}[1]{\medskip\rowcolors[]{1}{ImperialBlue!20}{ImperialBlue!10}\tabular{#1}\rowcolor{ImperialBlue!40}}{\endtabular\medskip}

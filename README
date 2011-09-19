@@ -40,3 +40,8 @@ from the command line.
       b) If on a *nix system, you should be able to drop the
 build-lecture.py script in the Python directory into a similar
 location, like ~/bin.
+
+    4. If you are using a version control system, please install the vc
+latex package and change the following lines:
+      - In lectures.sty, uncomment "\input{vc}"
+      - In build-lectures.py, change __useVC__ to True
