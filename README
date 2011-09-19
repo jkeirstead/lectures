@@ -29,7 +29,23 @@ To install the software:
 
    1. Unzip the code into a convenient location.  
 
-   2. Update your TeX search path to include the 'latex' directory.  
+   2. Update your TeX search path to include the 'latex' directory. 
+      a) If on Windows with MikTeX, go into Settings and click
+      the update file database button.
+      
+      b) If on a *nix system, type:
+
+      > texhash ~/lectures/latex
+      
+      	substituting with your local path as appropriate.  You may also
+	need to set the TEXINPUTS environment variable.  This is a pain
+	to set up but here's the bottom of my ~/.bashrc as an example:
+
+# TEX 
+TEXINPUTS=.:~/software/texmf//:/usr/share/texmf-texlive//:/usr/share/texmf//:
+export TEXINPUTS
+
+	This is on Ubuntu 10.04.
 
    3. Install the scripts.
       a) If on Windows, edit the SCRIPTDIR variable in the
@@ -39,4 +55,7 @@ from the command line.
 
       b) If on a *nix system, you should be able to drop the
 build-lecture.py script in the Python directory into a similar
-location, like ~/bin.
+location, like ~/bin.  You may need to add this directory to your
+$PATH variable and also change the permissions on the file, e.g.
+
+> chmod 766 build-lecture.py
