@@ -1,59 +1,135 @@
 % Defines common elements for preparing lecture notes 
-
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{lectures}[2011/09/10 Lecture notes and slides package]
 
+% Version control settings
+% Comment this out if not using version control
+\input{vc}
+
+% Load necessary packages 
+% -----------------------
+
 % Enable graphics
 \RequirePackage{graphicx}
-\newcommand{\mylogo}{}
-\newcommand{\setlogo}[1]{\renewcommand{\mylogo}{#1}}
 
 % Define fonts
 \RequirePackage{fontspec}
-\setmainfont{Minion Pro}
-\setsansfont{Myriad Pro}
-\setmonofont{Lucida Console}
-
-% Version control settings
-\input{vc}
+\defaultfontfeatures{Mapping=tex-text}
 
 % Set colours
 \RequirePackage{color}
-\definecolor{Gray}{rgb}{0.3,0.3,0.3}
 
 % Headings and footers
 \RequirePackage{fancyhdr}
 
-%% git revision control footer 
-\rfoot{\textcolor{Gray}{\texttt{\scriptsize \VCRevision\ on \VCDateISO}}} % 
+% Allow hyperlinks
+\RequirePackage{hyperref}
 
+% Allow referencing
+\RequirePackage{natbib}
+
+% For fancy code listings
+\RequirePackage{listings}
+
+% For framing slides
+\RequirePackage{tikz}
+
+% Define default values
+% -----------------------
+
+% Set default fonts
+\setmainfont{Minion Pro}
+\setsansfont{Myriad Pro}
+\setmonofont{Lucida Console}
+
+% Set default colours
+\definecolor{Gray}{rgb}{0.3,0.3,0.3}
+\definecolor{headings}{rgb}{0.082,0.416,0.608}
+\definecolor{links}{rgb}{0.612,0.278,0.086}
+
+% Default link settings
+\hypersetup{colorlinks=true,
+  linkcolor=headings,
+  citecolor=links,
+  urlcolor=black!50}
+
+% Set up code listing
+% Note different styles for presentation and article mode
+\lstset{language=Java}
+\mode<presentation>{%
+  \lstset{%
+  basicstyle=\footnotesize\ttfamily,
+  commentstyle=\slshape\color{green!50!black},
+  keywordstyle=\bfseries\color{headings!50!black},
+  identifierstyle=\color{headings},
+  stringstyle=\color{orange},
+  escapechar=\#,
+  emphstyle=\color{red}}
+}
+
+\mode<article>{%
+  \lstnewenvironment{rcode}{%
+    \lstset{language=R,
+  	basicstyle=\ttfamily,
+	backgroundcolor=\color{Gray!10},
+  	identifierstyle={}}}{}
+}
+\mode<presentation>{%
+  \lstnewenvironment{rcode}{%
+    \lstset{language=R,
+	basicstyle=\footnotesize\ttfamily,
+	backgroundcolor=\color{headings!10},
+  	identifierstyle={}}}{}
+}
+
+% Define custom commands
+% -----------------------
+
+% Command for adding a logo
+\newcommand{\setlogo}[1]{\logo{\includegraphics[width=2cm]{#1}}}
+
+% Define your email address 
+\newcommand{\myemail}{}
+\newcommand{\email}[1]{\renewcommand{\myemail}{#1}}
 
 % http://faculty.chicagobooth.edu/donald.eisenstein/more/BeamerLecture.html
-% Define custom commands
+% Create a variable for course name and number
 \newcommand{\mycourse}{}
 \newcommand{\mycoursenum}{}
 \newcommand{\course}[2][1]{%
   \renewcommand{\mycourse}{#2}%
   \renewcommand{\mycoursenum}{#1}}
-%\subject{\mycourse}
 
-% Allow hyperlinks
-\RequirePackage{hyperref}
-\hypersetup{colorlinks=true,urlcolor=black!50}
+% Define insert graphics with copyright info
+\newbox\mytempbox
+\newdimen\mytempdimen
+\newcommand\includegraphicscopyright[3][]{%
+  \leavevmode\vbox{%
+  \vskip3pt\raggedright\setbox\mytempbox=\hbox{\includegraphics[#1]{#2}}%
+   \mytempdimen=\wd\mytempbox\box\mytempbox\par\vskip1pt%
+  {\fontsize{5}{6}\selectfont{\color{black!75}{\vbox{\hsize=\mytempdimen#3}}}}%
+\vskip3pt%
+}}
 
-% Allow referencing
-\RequirePackage{natbib}
+% Define a coloured table with alternating rows
+\newenvironment{colortabular}[1]{%
+	\medskip\rowcolors[]{1}{headings!20}{headings!10}%
+	\tabular{#1}\rowcolor{headings!40}}%
+	{\endtabular\medskip}
+
+% Formatting for slides
+% -----------------------
 
 % Make sure title is set
 \AtBeginLecture{\title{\insertlecture}}
 
-% Set basic theme
+% Set basic beamer theme
 \usecolortheme{rose}
 \useinnertheme{circles}
 \usefonttheme[only large]{structurebold}
 
 \setbeamercolor{sidebar right}{bg=black!15}
-\setbeamercolor{structure}{fg=ImperialBlue}
+\setbeamercolor{structure}{fg=headings}
 \setbeamercolor{author}{parent=structure}
 
 \setbeamerfont{title}{series=\normalfont,size=\LARGE}
@@ -66,37 +142,6 @@
 
 \setbeamertemplate{navigation symbols}{}
 \setbeamertemplate{bibliography item}[book]
-
-\ifx\mylogo\@empty
- \logo{\includegraphics[width=2cm]{\mylogo}}
-\fi
-
-% Article settings
-% Article version layout settings
-\mode<article>
-
-\makeatletter
-\def\@listI{\leftmargin\leftmargini
-  \parsep 0pt
-  \topsep 5\p@   \@plus3\p@ \@minus5\p@
-  \itemsep0pt}
-\let\@listi=\@listI
-
-\setbeamertemplate{frametitle}{\paragraph*{\insertframetitle\
-    \ \small\insertframesubtitle}\ \par
-}
-
-\setlength{\marginparwidth}{1cm}
-\setlength{\marginparsep}{4.5cm}
-
-\let\origstartsection=\@startsection
-\def\@startsection#1#2#3#4#5#6{%
-  \origstartsection{#1}{#2}{#3}{#4}{#5}{#6\normalfont\sffamily\color{ImperialBlue}\selectfont}}
-
-\makeatother
-
-\mode
-<all>
 
 % From lecture style
 \useoutertheme[height=0pt,width=2.1cm,right]{sidebar}
@@ -121,8 +166,6 @@
     \insertshortauthor[width=2cm-2pt,center,respectlinebreaks]\par%
     \vskip1.25em%
   }%
-%  \hbox to2cm{\hss\insertlogo\hss}
-%  \vskip1.25em%
   \insertverticalnavigation{2cm}%
   \vfill
   \hbox to 2cm{\hfill\usebeamerfont{subsection in
@@ -150,26 +193,68 @@
   \insertinstitute\vskip1em
 }
 
-% Article version layout settings
+% Formatting for article
+% -----------------------
+
+
+\defbeamertemplate<article>{frame begin}{lined}{\par\noindent\rule{\textwidth}{1pt}\par}
+\defbeamertemplate<article>{frame end}{lined}{\par\noindent\rule{\textwidth}{1pt}\par}
+
+\newcounter{framebox}
+\defbeamertemplate<article>{frame begin}{tikzed}{\par\noindent\stepcounter{framebox}\tikz[remember picture,overlay] \path (-1ex,0) coordinate (frame top \the\value{framebox});\sffamily}
+\defbeamertemplate<article>{frame end}{tikzed}{\vskip1em\hspace*{\fill}\tikz[remember picture,overlay] \draw (frame top \the\value{framebox}) rectangle (1ex,0);\par \hfill\strut Slide \insertframenumber}
+
+% If you want it in a box, use the optional argument 'tikzed'.  
+% For lines top and bottom, use the optional argument 'lined'
+\mode<article>{
+%\setbeamertemplate{frame begin}[tikzed]
+%\setbeamertemplate{frame end}[tikzed]
+}
+
+% Insert the slide labels 
+\setlength{\marginparwidth}{1cm}
+\setlength{\marginparsep}{4.5cm}
+
+
+%\mode<article>{\usepackage{fullpage,fancyhdr}} 
+%\mode<article>{\usepackage[pdftex]{graphicx}} 
+%\mode<article>{\pagestyle{fancy}} 
+%\mode<article>{\thispagestyle{fancy}} 
+%\mode<article>{\lhead{left header}} 
+%\mode<article>{\rhead{}} 
+%\mode<article>{\cfoot{\thepage}} 
+
 \mode<article>
-
-\pagestyle{fancy}
-\fancyhead{}
-\fancyfoot{}
-\rhead{{\scriptsize\thepage}}
-
 
 \makeatletter
 
-\setbeamertemplate{frame end}{%
-  \marginpar{\scriptsize\hbox to 1cm{\sffamily%
-      \hfill\strut\insertshortlecture.\insertframenumber}\hrule height .2pt}}
+\def\@listI{\leftmargin\leftmargini
+  \parsep 0pt
+  \topsep 5\p@   \@plus3\p@ \@minus5\p@
+  \itemsep0pt}
+\let\@listi=\@listI
 
+\setbeamertemplate{frametitle}{\paragraph*{\insertframetitle\
+    \ \small\insertframesubtitle}\ \par
+}
+
+
+\let\origstartsection=\@startsection
+\def\@startsection#1#2#3#4#5#6{%
+  \origstartsection{#1}{#2}{#3}{#4}{#5}{#6\normalfont\sffamily\color{headings}\selectfont}}
+
+%\setbeamertemplate{frame end}{%
+%  \marginpar{\scriptsize\hbox to 1cm{\sffamily%
+%      \hfill\strut\insertshortlecture.\insertframenumber}\hrule height .2pt}}
+
+
+% Format title block
 \def\@maketitle{\makechapter}
 
 \def\makechapter{
   \newpage
   \null
+  {\raggedleft \hbox to2.1cm{\hss\includegraphics[width=2cm]{logo}\hss}}
   \vskip 2em%
   {%
     \parindent=0pt
@@ -177,11 +262,11 @@
     \sffamily
     \vskip8pt
 %    {\fontsize{36pt}{36pt}\selectfont Lecture \insertshortlecture \par\vskip2pt}
-    {\fontsize{24pt}{28pt}\selectfont \color{ImperialBlue} \insertlecture\par\vskip4pt}
-% TODO    {\Large\selectfont \color{ImperialBlue} \insertsubtitle\par}
+    {\fontsize{24pt}{28pt}\selectfont \color{headings} \insertlecture\par\vskip4pt}
+% TODO    {\Large\selectfont \color{headings} \insertsubtitle\par}
     \vskip10pt
-
     \normalsize\selectfont Print version of \mycourse\ (\mycoursenum) lecture\par
+	\@author\ (\href{mailto:\myemail}{\myemail}) \par
     \@date\par
     \vskip1.5em 
   }
@@ -196,44 +281,25 @@
 \mode
 <all>
 
+ \mode<article>{%
+% First page formatting
+   \fancypagestyle{plain}{%
+   \fancyhead{}%
+   \fancyfoot{}%
+   \renewcommand{\headrulewidth}{0pt}%
+   \renewcommand{\footrulewidth}{0pt}%
+   %% git revision control footer 
+   \rfoot{\textcolor{black!30}{\texttt{\scriptsize \VCRevision\ on \VCDateISO}}}} 
+% Subsequent pages
+   \pagestyle{fancy}%
+   \fancyhead{}%
+   \fancyfoot{}%
+   \lhead{{\mycoursenum\ -- \mycourse}}%
+   \rhead{{\thepage}}%
+   \renewcommand{\headrulewidth}{0pt}
+   %% git revision control footer 
+   \rfoot{\textcolor{black!30}{\texttt{\scriptsize \VCRevision\ on \VCDateISO}}}%
+ }
 
-% Typesetting code listings
-% Typesetting Listings
 
-\usepackage{listings}
-\lstset{language=Java}
 
-\alt<presentation>
-{\lstset{%
-  basicstyle=\footnotesize\ttfamily,
-  commentstyle=\slshape\color{green!50!black},
-  keywordstyle=\bfseries\color{ImperialBlue!50!black},
-  identifierstyle=\color{ImperialBlue},
-  stringstyle=\color{orange},
-  escapechar=\#,
-  emphstyle=\color{red}}
-}
-{
-  \lstset{%
-    basicstyle=\ttfamily,
-    keywordstyle=\bfseries,
-    commentstyle=\itshape,
-    escapechar=\#,
-    emphstyle=\bfseries\color{red}
-  }
-}
-
-% Graphics copyright def
-% New useful definitions:
-
-\newbox\mytempbox
-\newdimen\mytempdimen
-
-\newcommand\includegraphicscopyright[3][]{%
-  \leavevmode\vbox{\vskip3pt\raggedright\setbox\mytempbox=\hbox{\includegraphics[#1]{#2}}%
-    \mytempdimen=\wd\mytempbox\box\mytempbox\par\vskip1pt%
-    {\fontsize{5}{6}\selectfont{\color{black!75}{\vbox{\hsize=\mytempdimen#3}}}}\vskip3pt%
-}}
-
-% Other environments
-\newenvironment{colortabular}[1]{\medskip\rowcolors[]{1}{ImperialBlue!20}{ImperialBlue!10}\tabular{#1}\rowcolor{ImperialBlue!40}}{\endtabular\medskip}
