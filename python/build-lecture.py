@@ -10,7 +10,7 @@ import glob
 
 __author__ = "James Keirstead"
 __copyright__ = "Copyright 2011, James Keirstead"
-
+__useVC__ = True
 
 # Define a function to build the file
 def build_file(content, style, isSlide):
@@ -52,6 +52,13 @@ def build_file(content, style, isSlide):
     source.close()
 
     # Compile the result
+    if __useVC__:
+# sys.platform = 'win32' or other...
+        if os.name == 'nt': # 'nt', 'posix' for others
+            subprocess.call('vc.bat')
+        else:
+            subprocess.call('sh ./vc')
+
     commands = ['xelatex','bibtex','xelatex','xelatex']
     for command in commands:
         subprocess.call((command, root)) 

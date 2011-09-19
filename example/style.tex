@@ -1,0 +1,19 @@
+% Override default fonts
+\setmainfont{Minion Pro}
+\setsansfont{Myriad Pro}
+\setmonofont{Lucida Console}
+
+% Define colours
+%\definecolor{ImperialBlue}{rgb}{0.082,0.416,0.608}
+%\definecolor{ImperialLightBlue}{rgb}{0.545,0.682,0.8}
+%\definecolor{UESGreen}{rgb}{0.133,0.694,0.298}
+%\definecolor{ImperialBrown}{rgb}{0.612,0.278,0.086}
+
+
+% Change the date style
+\RequirePackage{datetime}
+\newdateformat{UKdate}{\THEDAY\ \themonthname[\THEMONTH]\ \THEYEAR}
+\UKdate
+
+% Change the logo
+\setlogo{logo}
