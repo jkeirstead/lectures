@@ -1,4 +1,14 @@
 % Defines common elements for preparing lecture notes 
+% James Keirstead
+% Copyright 2011
+%
+% Some of this code comes from Till Tantau's excellent example at http://www.ctan.org/tex-archive/macros/latex/contrib/beamer/examples/a-lecture
+% 
+% This file may be distributed and/or modified
+%
+% 1. under the LaTeX Project Public License and/or
+% 2. under the GNU Public License.
+
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{lectures}[2011/09/10 Lecture notes and slides package]
 
@@ -43,7 +53,7 @@
 \setmonofont{Lucida Console}
 
 % Set default colours
-\definecolor{Gray}{rgb}{0.3,0.3,0.3}
+\definecolor{codebg}{rgb}{0.3,0.3,0.3}
 \definecolor{headings}{rgb}{0.082,0.416,0.608}
 \definecolor{links}{rgb}{0.612,0.278,0.086}
 
@@ -71,7 +81,7 @@
   \lstnewenvironment{rcode}{%
     \lstset{language=R,
   	basicstyle=\ttfamily,
-	backgroundcolor=\color{Gray!10},
+	backgroundcolor=\color{codebg!10},
   	identifierstyle={}}}{}
 }
 \mode<presentation>{%

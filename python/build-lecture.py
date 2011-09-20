@@ -54,8 +54,7 @@ def build_file(content, style, isSlide):
 
     # Compile the result
     if useVC:
-# sys.platform = 'win32' or other...
-        if os.name == 'nt': # 'nt', 'posix' for others
+        if os.name == 'nt': # Call batch file on Windows platforms
             subprocess.call('vc.bat')
         else:
             subprocess.call('sh ./vc')
