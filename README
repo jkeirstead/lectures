@@ -2,7 +2,7 @@
 Build lecture slides and notes from common source 
 
 James Keirstead 
-9 September 2011
+20 September 2011
 http://www.jameskeirstead.ca
 ------------------------------------------------- 
 
@@ -63,5 +63,9 @@ $PATH variable and also change the permissions on the file, e.g.
     4. If you are using a version control system, please install the vc
 latex package and change the following lines:
       - In lectures.sty, uncomment "\input{vc}"
-      - In build-lectures.py, change __useVC__ to True
+      - In build-lectures.py, change useVC to True
+
+      You will also need to copy the relevant files from the vc latex
+      package into your working directory.  The package and documentation
+      are available at http://www.ctan.org/tex-archive/support/vc
 
