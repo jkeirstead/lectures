@@ -100,6 +100,13 @@
   \renewcommand{\mycourse}{#2}%
   \renewcommand{\mycoursenum}{#1}}
 
+% Hack to get institute name for title definition
+% You may wish to comment this out (and the relevant bit of the title page definition) if 
+% using more complicated institutional affliations (e.g. multiple authors)
+\let\oldinst\institute
+\renewcommand{\institute}[1]{\oldinst{#1}%
+	\newcommand{\myinst}{#1}}
+
 % Define insert graphics with copyright info
 \newbox\mytempbox
 \newdimen\mytempdimen
@@ -116,6 +123,9 @@
 	\medskip\rowcolors[]{1}{headings!20}{headings!10}%
 	\tabular{#1}\rowcolor{headings!40}}%
 	{\endtabular\medskip}
+
+% Turn off extra section for bibliography.  Want to define it manually in source code.
+\renewcommand{\bibsection}{}
 
 % Formatting for slides
 % -----------------------
@@ -196,33 +206,33 @@
 % Formatting for article
 % -----------------------
 
-
-\defbeamertemplate<article>{frame begin}{lined}{\par\noindent\rule{\textwidth}{1pt}\par}
-\defbeamertemplate<article>{frame end}{lined}{\par\noindent\rule{\textwidth}{1pt}\par}
-
-\newcounter{framebox}
-\defbeamertemplate<article>{frame begin}{tikzed}{\par\noindent\stepcounter{framebox}\tikz[remember picture,overlay] \path (-1ex,0) coordinate (frame top \the\value{framebox});\sffamily}
-\defbeamertemplate<article>{frame end}{tikzed}{\vskip1em\hspace*{\fill}\tikz[remember picture,overlay] \draw (frame top \the\value{framebox}) rectangle (1ex,0);\par \hfill\strut Slide \insertframenumber}
-
-% If you want it in a box, use the optional argument 'tikzed'.  
-% For lines top and bottom, use the optional argument 'lined'
-\mode<article>{
-%\setbeamertemplate{frame begin}[tikzed]
-%\setbeamertemplate{frame end}[tikzed]
+\mode<article>
+{%
+  \usepackage[left=1.5cm,right=6cm,top=1.5cm,bottom=3cm]{geometry}
 }
 
-% Insert the slide labels 
-\setlength{\marginparwidth}{1cm}
-\setlength{\marginparsep}{4.5cm}
+% \defbeamertemplate<article>{frame begin}{lined}{\par\noindent\rule{\textwidth}{1pt}\par}
+% \defbeamertemplate<article>{frame end}{lined}{\par\noindent\rule{\textwidth}{1pt}\par}
+% 
+% \newcounter{framebox}
+% \defbeamertemplate<article>{frame begin}{tikzed}{\par\noindent\stepcounter{framebox}\tikz[remember picture,overlay] \path (-1ex,0) coordinate (frame top \the\value{framebox});\sffamily}
+% \defbeamertemplate<article>{frame end}{tikzed}{\vskip1em\hspace*{\fill}\tikz[remember picture,overlay] \draw (frame top \the\value{framebox}) rectangle (1ex,0);\par \hfill\strut Slide \insertframenumber}
+% 
+ \defbeamertemplate<article>{frame begin}{margins}{\sffamily}
+ \defbeamertemplate<article>{frame end}{margins}{\marginpar{\scriptsize\hbox to 1cm{\sffamily \hfill\strut Slide~\insertframenumber}\hrule height .2pt}}
 
+% 
+% Format for slides:
+%  - for a frame around the slide, use the optional argument 'tikzed'.  
+%  - for lines top and bottom, use the optional argument 'lined'.  
+%  - for a margin note, use the optional argument 'margins'.  
 
-%\mode<article>{\usepackage{fullpage,fancyhdr}} 
-%\mode<article>{\usepackage[pdftex]{graphicx}} 
-%\mode<article>{\pagestyle{fancy}} 
-%\mode<article>{\thispagestyle{fancy}} 
-%\mode<article>{\lhead{left header}} 
-%\mode<article>{\rhead{}} 
-%\mode<article>{\cfoot{\thepage}} 
+% For lines top and bottom, use the optional argument 'lined'
+\mode<article>{
+\setbeamertemplate{frame begin}[margins]
+\setbeamertemplate{frame end}[margins]
+}
+
 
 \mode<article>
 
@@ -238,15 +248,13 @@
     \ \small\insertframesubtitle}\ \par
 }
 
+% Insert the slide labels 
+\setlength{\marginparwidth}{1cm}
+\setlength{\marginparsep}{4.5cm}
 
 \let\origstartsection=\@startsection
 \def\@startsection#1#2#3#4#5#6{%
   \origstartsection{#1}{#2}{#3}{#4}{#5}{#6\normalfont\sffamily\color{headings}\selectfont}}
-
-%\setbeamertemplate{frame end}{%
-%  \marginpar{\scriptsize\hbox to 1cm{\sffamily%
-%      \hfill\strut\insertshortlecture.\insertframenumber}\hrule height .2pt}}
-
 
 % Format title block
 \def\@maketitle{\makechapter}
@@ -254,7 +262,6 @@
 \def\makechapter{
   \newpage
   \null
-  {\raggedleft \hbox to2.1cm{\hss\includegraphics[width=2cm]{logo}\hss}}
   \vskip 2em%
   {%
     \parindent=0pt
@@ -263,10 +270,11 @@
     \vskip8pt
 %    {\fontsize{36pt}{36pt}\selectfont Lecture \insertshortlecture \par\vskip2pt}
     {\fontsize{24pt}{28pt}\selectfont \color{headings} \insertlecture\par\vskip4pt}
-% TODO    {\Large\selectfont \color{headings} \insertsubtitle\par}
+   {\Large\selectfont \color{headings} \insertsubtitle\par}
     \vskip10pt
     \normalsize\selectfont Print version of \mycourse\ (\mycoursenum) lecture\par
-	\@author\ (\href{mailto:\myemail}{\myemail}) \par
+	\@author\ (\href{mailto:\myemail}{\myemail}) \par 
+    \myinst\par
     \@date\par
     \vskip1.5em 
   }
@@ -288,6 +296,7 @@
    \fancyfoot{}%
    \renewcommand{\headrulewidth}{0pt}%
    \renewcommand{\footrulewidth}{0pt}%
+   \lhead{\hbox to2.1cm{\hss\includegraphics[width=2cm]{logo}\hss}}%
    %% git revision control footer 
    \rfoot{\textcolor{black!30}{\texttt{\scriptsize \VCRevision\ on \VCDateISO}}}} 
 % Subsequent pages
