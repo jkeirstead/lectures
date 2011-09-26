@@ -37,8 +37,8 @@ def build_file(content, style, isSlide):
     f.close()
 
     # Create the source file
-    src_file = root + '.tex'
-    source = open(src_file, 'w')
+    src_file = content + '-' + root
+    source = open(src_file + '.tex', 'w')
     
     for line in lines:
         source.write(line)
@@ -61,11 +61,11 @@ def build_file(content, style, isSlide):
 
     commands = ['xelatex','bibtex','xelatex','xelatex']
     for command in commands:
-        subprocess.call((command, root)) 
+        subprocess.call((command, src_file)) 
 
     # Tidy up
     bad_exts = ['aux','bbl','nav','out','blg','snm','toc']
-    bad_exts = [(root + '.' + ext) for ext in bad_exts]
+    bad_exts = [(src_file + '.' + ext) for ext in bad_exts]
 
     for root, dirs, files in os.walk(os.getcwd()):
         for trace in bad_exts:
