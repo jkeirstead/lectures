@@ -96,7 +96,12 @@
 % -----------------------
 
 % Command for adding a logo
-\newcommand{\setlogo}[1]{\logo{\includegraphics[width=2cm]{#1}}}
+\newcommand{\mylogo}{}
+\newlength{\logowidth}
+\setlength{\logowidth}{2cm}
+\newcommand{\setlogo}[1]{%
+  \logo{\includegraphics[width=2cm]{#1}}%
+  \renewcommand{\mylogo}{#1}}
 
 % Define your email address 
 \newcommand{\myemail}{}
@@ -306,7 +311,8 @@
    \fancyfoot{}%
    \renewcommand{\headrulewidth}{0pt}%
    \renewcommand{\footrulewidth}{0pt}%
-   \lhead{\hbox to2.1cm{\hss\includegraphics[width=2cm]{logo}\hss}}%
+%   \lhead{\hbox to2.1cm{\hss\includegraphics[width=2cm]{\mylogo}\hss}}%
+   \lhead{\includegraphics[width=\logowidth]{\mylogo}}%
    %% git revision control footer 
    \rfoot{\textcolor{black!30}{\texttt{\scriptsize \VCRevision\ on \VCDateISO}}}} 
 % Subsequent pages
