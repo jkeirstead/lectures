@@ -34,24 +34,24 @@ To install the software:
  
 2. Update your TeX search path to include the 'latex' directory. 
 
-    * If on Windows with MikTeX, use the Settings program and select
+  * If on Windows with MikTeX, use the Settings program and select
      the Roots tab.  Add the project's latex directory. Then select 
      the General tab and click the "Refresh FNDB" button.  This will 
      add the files to MiKTeX's file name database.
 	  
-	* If on a *nix system, type:
+  * If on a *nix system, type:
 ```
 		texhash ~/lectures/latex
 ```      
 	substituting with your local path as appropriate.  You may also
 	need to set the TEXINPUTS environment variable.  This is a pain
 	to set up but here's the bottom of my ~/.bashrc as an example:
-
+```
 		# TEX 
 		TEXINPUTS=.:~/software/texmf//:/usr/share/texmf-texlive//:/usr/share/texmf//:
 		export TEXINPUTS
-
-	For completeness, this is on Ubuntu 10.04 system.
+```
+  For completeness, this is on Ubuntu 10.04 system.
 
 3. Install the scripts.
 
