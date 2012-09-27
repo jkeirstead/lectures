@@ -13,7 +13,7 @@ for %%x in (%*) do Set /A argC+=1
 
 if %argC% == 2 (
    echo Building lecture '%1' with style '%2'
-   python %SCRIPTDIR%\build-lecture.py %1 %2 > build.log
+   python -u %SCRIPTDIR%\build-lecture.py %1 %2 > build.log
    echo Build complete.  Further information in 'build.log'.
 ) ELSE (
   echo Need two arguments, the content file 1 and the style file 2

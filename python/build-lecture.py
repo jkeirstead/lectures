@@ -13,6 +13,16 @@ __copyright__ = "Copyright 2011--2012, James Keirstead"
 
 useVC = True
 
+# Checks if the necessary files are present to run the vc commands
+def check_vc_files():
+    try:
+        with open('vc.bat') as f: pass
+    except IOError as e:
+        print 'vc.bat missing.  Version control features will be disabled.'
+        global useVC
+        useVC = False
+    return
+
 # Define a function to build the file
 def build_file(content, style, isSlide, showAnswer):
     """Builds and compiles the lecture files with a given style 
@@ -23,6 +33,9 @@ def build_file(content, style, isSlide, showAnswer):
     isSlide -- True, if slides should be built.  False, if notes.
     showAnswer -- True if quiz answers should be shown.
     """
+
+    if useVC:
+        check_vc_files()
 
     # Set up some initial variables
     root = 'slides' if isSlide else 'notes'
@@ -47,7 +60,7 @@ def build_file(content, style, isSlide, showAnswer):
     for line in lines:
         source.write(line)
 
-    if (isSlide):
+    if isSlide:
         # This code needs to be inserted before the content
         source.write('%% Necessary to ensure that the bibliography shows up correctly\n')
         source.write('\mode<presentation>{\def\\newblock{}}\n')
@@ -83,7 +96,10 @@ def build_file(content, style, isSlide, showAnswer):
             for filename in glob.glob(win_trace_path):
                 if os.path.exists(filename):
                     os.remove(filename)
- 
+
+    return
+
+
 # Read the command line arguments
 content = sys.argv[1]
 style = sys.argv[2]
