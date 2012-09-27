@@ -9,18 +9,19 @@ import subprocess
 import glob
 
 __author__ = "James Keirstead"
-__copyright__ = "Copyright 2011, James Keirstead"
+__copyright__ = "Copyright 2011--2012, James Keirstead"
 
 useVC = True
 
 # Define a function to build the file
-def build_file(content, style, isSlide):
+def build_file(content, style, isSlide, showAnswer):
     """Builds and compiles the lecture files with a given style 
 
     Keyword arguments:
     content -- the content file
     style   -- the style file
     isSlide -- True, if slides should be built.  False, if notes.
+    showAnswer -- True if quiz answers should be shown.
     """
 
     # Set up some initial variables
@@ -36,8 +37,11 @@ def build_file(content, style, isSlide):
     lines = f.readlines()
     f.close()
 
+    answer = 'answers' if showAnswer else 'no-answers'
+
     # Create the source file
-    src_file = content + '-' + root
+
+    src_file = content + '-' + root + '-' + answer
     source = open(src_file + '.tex', 'w')
     
     for line in lines:
@@ -47,6 +51,12 @@ def build_file(content, style, isSlide):
         # This code needs to be inserted before the content
         source.write('%% Necessary to ensure that the bibliography shows up correctly\n')
         source.write('\mode<presentation>{\def\\newblock{}}\n')
+
+    source.write('% Toggle for quiz answers\n')
+    if (showAnswer):
+        source.write('\setboolean{showanswer}{true}')
+    else:
+        source.write('\setboolean{showanswer}{false}')
 
     source.write('\input{' + style + '}\n')
     source.write('\input{' + content + '}\n')
@@ -79,5 +89,7 @@ content = sys.argv[1]
 style = sys.argv[2]
 
 # Build the files
-build_file(content, style, True)
-build_file(content, style, False)
+build_file(content, style, True, False)
+build_file(content, style, False, False)
+build_file(content, style, True, True)
+build_file(content, style, False, True)

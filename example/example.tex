@@ -23,14 +23,19 @@
 %% Use the section commands to divide up the talk, inserting slides where appropriate. 
 
 \section{Introduction}
+
+% Any text that is not contained within a frame environment
+% will be displayed only in the article version of the lecture.
 Today's talk will be about widgets.  
 
-%% A basic frame with some content
+% Some frames (slides)
+%-----------
+% This is a standard Beamer frame with titles
 \begin{frame}{Widgets}
 A widget is a thingy.
 \end{frame}
 
-%% A frame with a subtitle and columns
+% A frame with a subtitle and columns
 \begin{frame}{Widgets}{In two columns}
 \begin{columns}[t]
 \begin{column}{0.5\textwidth}
@@ -45,7 +50,8 @@ Second column text \citep{Body2000}
 \end{columns}
 \end{frame}
 
-% Some code
+% Code display
+%--------------
 % More code environments can be defined above
 % using the listings package.
 \begin{frame}[fragile]{Sample R code}
@@ -54,6 +60,21 @@ x <- 1
 \end{rcode}
 \end{frame}
 
+% Hidden output
+% --------------
+% Occasionally you will want to only display
+% a blank space so that students can fill in a gap during
+% the lecture.  This is done with the quiz environment
+
+\begin{frame}{A quiz}
+A quick quiz: $1 + 1 = ?$
+\begin{quiz}
+The answer is 2
+\end{quiz}
+\end{frame}
+
+% References
+% ----------
 %% Optional slide for references
 \section{References}
 If you would like to read more about widgets, please try these references.

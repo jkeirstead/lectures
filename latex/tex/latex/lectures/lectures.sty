@@ -22,6 +22,9 @@
 % Enable graphics
 \RequirePackage{graphicx}
 
+% Boolean switching
+\RequirePackage{ifthen}
+
 % Define fonts
 \RequirePackage{fontspec}
 \defaultfontfeatures{Mapping=tex-text}
@@ -46,6 +49,9 @@
 
 % For framing slides
 \RequirePackage{tikz}
+
+% For box manipulation
+\RequirePackage{calc}
 
 % Define default values
 % -----------------------
@@ -93,6 +99,27 @@
 	basicstyle=\footnotesize\ttfamily,
 	backgroundcolor=\color{headings!10},
   	identifierstyle={}}}{}
+}
+
+% Formatting of quiz results
+\newsavebox{\quizbox}
+\newlength{\quizheight}
+\newboolean{showanswer}
+\setboolean{showanswer}{true}
+\newenvironment{quiz}{%
+  \begin{lrbox}{\quizbox}
+}{%
+  \end{lrbox}
+
+  \ifthenelse{\boolean{showanswer}}{%
+    \usebox{\quizbox}
+  }{%
+    \settoheight{\quizheight}{\usebox{\quizbox}}
+    \fbox{\begin{minipage}[\quizheight]{\linewidth}%
+        Answer:\hspace{\linewidth}\\[1em]
+    \end{minipage}}
+  }
+
 }
 
 % Define custom commands
@@ -214,7 +241,7 @@
     {\usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle\par}%
   \fi%     
   \vskip1em\par
-  \mycourse\ (\mycoursenum)\ lecture\par
+  \mycourse\ \ifthenelse{\equal{\mycoursenum}{}}{}{(\mycoursenum)\ lecture}\par
   \insertdate\par
   \vskip0pt plus1filll
   \leftskip=0pt plus1fill\insertauthor\par
@@ -290,7 +317,7 @@
     {\fontsize{24pt}{28pt}\selectfont \color{headings} \insertlecture\par\vskip4pt}
    {\Large\selectfont \color{headings} \insertsubtitle\par}
     \vskip10pt
-    \normalsize\selectfont Print version of \mycourse\ (\mycoursenum) lecture\par
+    \normalsize\selectfont Print version of \mycourse\ \ifthenelse{\equal{\mycoursenum}{}}{}{(\mycoursenum)\ lecture}\par
 	\@author\ (\href{mailto:\myemail}{\myemail}) \par 
     \myinst\par
     \@date\par

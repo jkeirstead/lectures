@@ -5,7 +5,7 @@
 @ECHO OFF
 
 :: Change this directory as appropriate to your installation
-SET SCRIPTDIR=d:\jkeirste\teaching\lectures\python
+SET SCRIPTDIR=d:\jkeirste\code\lectures\python
 
 :: Only run the analysis if there are two arguments
 set argC=0
