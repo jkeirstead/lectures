@@ -48,6 +48,7 @@
 
 % For framing slides
 \RequirePackage{tikz}
+\usetikzlibrary{positioning, arrows}
 
 % For box manipulation
 \RequirePackage{calc}
@@ -109,21 +110,23 @@
 \newlength{\quizheight}
 \newboolean{showanswer}
 \setboolean{showanswer}{true}
-\newenvironment{quiz}{%
-  \begin{lrbox}{\quizbox}
-}{%
-  \end{lrbox}
 
+\newenvironment{quiz}{%
+  \begin{lrbox}{\quizbox}%
+  \begin{minipage}{\linewidth}%
+}{%
+  \end{minipage}%
+  \end{lrbox}%
   \ifthenelse{\boolean{showanswer}}{%
-    \usebox{\quizbox}
+    \pause\noindent\usebox{\quizbox}%
   }{%
     \settoheight{\quizheight}{\usebox{\quizbox}}
     \fbox{\begin{minipage}[\quizheight]{\linewidth}%
         Answer:\hspace{\linewidth}\\[1em]
     \end{minipage}}
   }
-
 }
+
 
 % Define custom commands
 % -----------------------
